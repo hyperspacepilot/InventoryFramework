@@ -18,7 +18,8 @@ public class SquaredBackGroundDesign extends InventoryDesign {
     public ItemStack[][] getLines() {
         for (int a = 0; a < rows; a++) {
             for (int b = 0; b <= 8; b++) {
-                lines[a][b] = ((a % 2 == 0 && b % 2 == 0) || (a % 2 == 1 && b % 2 == 1)) ? firstBackGroundItemStack : secondBackGroundItemStack;
+                lines[a][b] = ((a % 2 == 0 && b % 2 == 0)
+                        || (a % 2 == 1 && b % 2 == 1)) ? firstBackGroundItemStack : secondBackGroundItemStack;
             }
         }
         return lines;

@@ -58,7 +58,9 @@ public abstract class Inventory {
 
     public void createInventory() {
         if (inventory == null) {
-            inventory = Bukkit.createInventory(null, rows * 9, InventoryManager.getInstance(this.plugin.getClass()).getInventoryIdentifier() + id + (title.startsWith("§") || id.endsWith("0") ? title : "§0" + title));
+            inventory = Bukkit.createInventory(null, rows * 9,
+                    InventoryManager.getInstance(this.plugin.getClass())
+                            .getInventoryIdentifier() + id + (title.startsWith("§") || id.endsWith("0") ? title : "§0" + title));
         }
         if (this.design != null) {
             ItemStack[][] lines = design.getLines();
@@ -102,7 +104,8 @@ public abstract class Inventory {
     public Inventory open(Player player) {
         this.player = player;
         createInventory();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(InventoryManager.getInstance(this.getPlugin().getClass()).getPlugin(), () -> {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(
+                InventoryManager.getInstance(this.getPlugin().getClass()).getPlugin(), () -> {
             player.closeInventory();
             player.openInventory(inventory);
         });

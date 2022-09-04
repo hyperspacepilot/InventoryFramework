@@ -9,7 +9,8 @@ public class CorneredBackgroundDesign extends InventoryDesign {
     protected ItemStack inCornerBackGroundItemStack;
     protected ItemStack outCornerBackGroundItemStack;
 
-    public CorneredBackgroundDesign(int rows, ItemStack backGroundItemStack, ItemStack inCornerBackGroundItemStack, ItemStack outCornerBackGroundItemStack) {
+    public CorneredBackgroundDesign(int rows, ItemStack backGroundItemStack, ItemStack inCornerBackGroundItemStack,
+                                    ItemStack outCornerBackGroundItemStack) {
         super((rows < 5 ? 5 : (rows > 6 ? 6 : rows)));
         this.backGroundItemStack = backGroundItemStack;
         this.inCornerBackGroundItemStack = inCornerBackGroundItemStack;
@@ -20,7 +21,10 @@ public class CorneredBackgroundDesign extends InventoryDesign {
     public ItemStack[][] getLines() {
         for (int a = 0; a < rows; a++) {
             for (int b = 0; b <= 8; b++) {
-                lines[a][b] = (((a == 0 && (b == 0 || b == 1 || b == 7 || b == 8)) || (a == 1 && (b == 0 || b == 8)) || (a == (rows -2) && (b == 0 || b == 8)) || (a == (rows-1) && (b == 0 || b == 1 || b == 7 || b == 8))) ? ((((a == 0 || a == (rows-1)) && (b == 0 || b == 8))) ? inCornerBackGroundItemStack : outCornerBackGroundItemStack) : backGroundItemStack);
+                lines[a][b] = (((a == 0 && (b == 0 || b == 1 || b == 7 || b == 8)) || (a == 1 && (b == 0 || b == 8))
+                        || (a == (rows -2) && (b == 0 || b == 8)) || (a == (rows-1) && (b == 0 || b == 1 || b == 7
+                        || b == 8))) ? ((((a == 0 || a == (rows-1))
+                        && (b == 0 || b == 8))) ? inCornerBackGroundItemStack : outCornerBackGroundItemStack) : backGroundItemStack);
             }
         }
         return lines;
