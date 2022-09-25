@@ -1,4 +1,4 @@
-package de.hyper.inventory.buttons;
+package de.hyper.inventory.old.buttons;
 
 import org.bukkit.event.inventory.InventoryAction;
 

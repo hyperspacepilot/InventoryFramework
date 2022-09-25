@@ -1,7 +1,7 @@
-package de.hyper.inventory;
+package de.hyper.inventory.old;
 
-import de.hyper.inventory.buttons.Button;
-import de.hyper.inventory.designs.TopBottomLineBackGroundDesign;
+import de.hyper.inventory.old.buttons.Button;
+import de.hyper.inventory.old.designs.TopBottomLineBackGroundDesign;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;

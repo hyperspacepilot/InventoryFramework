@@ -2,10 +2,7 @@ package de.hyper.inventory;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,112 +10,93 @@ import java.util.Map;
 @Getter
 public abstract class Inventory {
 
-    @Setter
-    private String title;
-    private final String id;
-    private final int rows;
-    @Setter
-    private InventoryDesign design;
-    private final Map<Integer, InventoryButton> buttons;
-    @Setter
-    private boolean closeable;
-    @Setter
-    private boolean instantDelete = true;
-    protected org.bukkit.inventory.Inventory inventory;
     protected Player player;
-    private Plugin plugin;
+    protected String title;
+    protected int rows;
+    @Setter
+    protected InventoryDesign design;
+    protected Map<Integer, InventoryButton> buttons;
+    @Setter
+    protected boolean animated = false;
+    protected InventoryAnimation animation;
+    @Setter
+    protected boolean closeable = true;
+    @Setter
+    protected boolean created = false;
+    @Setter
+    protected InventoryBuilder inventoryBuilder;
 
-    public Inventory(Plugin plugin, String title, int rows) {
-        this.plugin = plugin;
-        this.title = title;
-        this.id = InventoryManager.getInstance(this.getPlugin().getClass()).getNewID();
-        this.rows = (rows < 1 ? 1 : (rows > 6 ? 6 : rows));
-        this.design = null;
-        this.buttons = new HashMap<>();
-        this.closeable = true;
-        this.inventory = null;
-        this.player = null;
-        createInventory();
-        InventoryManager.getInstance(this.plugin.getClass()).getInventories().put(id, this);
-    }
-
-    public Inventory(Plugin plugin, String title, int rows, boolean closeable) {
-        this.plugin = plugin;
-        this.title = title;
-        this.id = InventoryManager.getInstance(this.plugin.getClass()).getNewID();
-        this.rows = (rows < 1 ? 1 : (rows > 6 ? 6 : rows));
-        this.design = null;
-        this.buttons = new HashMap<>();
-        this.closeable = closeable;
-        this.inventory = null;
-        this.player = null;
-        createInventory();
-        InventoryManager.getInstance(this.getPlugin().getClass()).getInventories().put(id, this);
-    }
-
-    public void createInventory() {
-        if (inventory == null) {
-            inventory = Bukkit.createInventory(null, rows * 9,
-                    InventoryManager.getInstance(this.plugin.getClass())
-                            .getInventoryIdentifier() + id + (title.startsWith("§") || id.endsWith("0") ? title : "§0" + title));
-        }
-        if (this.design != null) {
-            ItemStack[][] lines = design.getLines();
-            for (int i = 1; i <= rows; i++) {
-                ItemStack[] line = lines[i - 1];
-                if (line != null) {
-                    for (int a = 0; a < 9; a++) {
-                        if (a + 1 <= line.length) {
-                            if (inventory.getItem(((i - 1) * 9) + a) == null) {
-                                inventory.setItem(((i - 1) * 9) + a, line[a]);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void registerButton(int row, int slot, InventoryButton button, ItemStack itemStack) {
-        registerButton((((row == 0 ? 1 : (row > 6 ? 6 : row)) - 1) * 9) + slot, button, itemStack);
-    }
-
-    public void registerButton(int row, int slot, InventoryButton button) {
-        registerButton((((row == 0 ? 1 : (row > 6 ? 6 : row)) - 1) * 9) + slot, button);
-    }
-
-    public void registerButton(int slot, InventoryButton button, ItemStack itemStack) {
-        registerButton(slot, button);
-        if (slot < (this.rows * 9)) {
-            inventory.setItem(slot, itemStack);
-        }
-    }
-
-    public void registerButton(int slot, InventoryButton button) {
-        if (button != null) {
-            buttons.put(slot, button);
-            button.add(this);
-        }
-    }
-
-    public Inventory open(Player player) {
+    public Inventory(Player player, String title, int rows) {
         this.player = player;
-        createInventory();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(
-                InventoryManager.getInstance(this.getPlugin().getClass()).getPlugin(), () -> {
-            player.closeInventory();
-            player.openInventory(inventory);
-        });
-        onOpen();
-        return this;
+        this.title = title;
+        this.rows = rows;
+        this.buttons = new HashMap<>();
+        this.animation = new InventoryAnimation();
+    }
+
+    public Inventory(Player player, String title, int rows, boolean animated) {
+        this.player = player;
+        this.title = title;
+        this.rows = rows;
+        this.buttons = new HashMap<>();
+        this.animated = animated;
+        this.animation = new InventoryAnimation();
+    }
+
+    public void registerButtonAndItem(int row, int slot, InventoryButton inventoryButton, ItemStackData itemStackData) {
+        registerButtonAndItem(row, slot, inventoryButton, itemStackData, 0L);
+    }
+
+    public void registerButtonAndItem(int row, int slot, InventoryButton inventoryButton, ItemStackData itemStackData, long timeToWait) {
+        registerButtonAndItem(row * 9 + slot, inventoryButton, itemStackData, timeToWait);
+    }
+
+    public void registerButtonAndItem(int slot, InventoryButton inventoryButton, ItemStackData itemStackData) {
+        registerButtonAndItem(slot, inventoryButton, itemStackData, 0L);
+    }
+
+    public void registerButtonAndItem(int slot, InventoryButton inventoryButton, ItemStackData itemStackData, long timeToWait) {
+        registerButton(slot, inventoryButton);
+        registerItem(slot, itemStackData, timeToWait);
+    }
+
+    public void registerButton(int row, int slot, InventoryButton inventoryButton) {
+        registerButton(row * 9 + slot, inventoryButton);
+    }
+
+    public void registerButton(int slot, InventoryButton inventoryButton) {
+        this.buttons.put(slot, inventoryButton);
+    }
+
+    public void registerItem(int row, int slot, ItemStackData itemStackData) {
+        registerItem(row * 9 + slot, itemStackData);
+    }
+
+    public void registerItem(int slot, ItemStackData itemStackData) {
+        registerItem(slot, itemStackData, 0L);
+    }
+
+    public void registerItem(int row, int slot, ItemStackData itemStackData, long timeToWait) {
+        registerItem(row * 9 + slot, itemStackData, timeToWait);
+    }
+
+    public void registerItem(int slot, ItemStackData itemStackData, long timeToWait) {
+        this.animation.registerSlot(slot, itemStackData, timeToWait);
+    }
+
+    public void clearSlot(int row, int slot, ItemStackData itemStackData) {
+        clearSlot(row * 9 + slot, itemStackData);
+    }
+
+    public void clearSlot(int slot, ItemStackData itemStackData) {
+        this.inventoryBuilder.bukkitInventory.setItem(slot, itemStackData.build());
     }
 
     public abstract Inventory fillInventory();
 
-    public abstract Inventory cleanInventory();
+    public abstract Inventory clearInventory();
 
     public abstract void onOpen();
 
     public abstract void onClose();
-
 }

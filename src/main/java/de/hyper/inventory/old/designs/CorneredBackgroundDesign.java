@@ -1,6 +1,6 @@
-package de.hyper.inventory.designs;
+package de.hyper.inventory.old.designs;
 
-import de.hyper.inventory.InventoryDesign;
+import de.hyper.inventory.old.InventoryDesign;
 import org.bukkit.inventory.ItemStack;
 
 public class CorneredBackgroundDesign extends InventoryDesign {

@@ -1,6 +1,6 @@
-package de.hyper.inventory;
+package de.hyper.inventory.old;
 
-import de.hyper.inventory.buttons.Button;
+import de.hyper.inventory.old.buttons.Button;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.event.inventory.InventoryAction;

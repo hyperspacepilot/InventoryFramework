@@ -1,16 +1,20 @@
 package de.hyper.inventory;
 
-import org.bukkit.inventory.ItemStack;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
 public abstract class InventoryDesign {
 
+    protected ItemStackData[][] items;
     protected int rows;
-    protected ItemStack[][] lines;
+    @Setter
+    protected boolean animated;
 
     public InventoryDesign(int rows) {
-        this.rows = (rows < 1 ? 1 : (rows > 6 ? 6 : rows));
-        this.lines = new ItemStack[rows][9];
+        this.rows = (rows < 0 ? 0 : (rows > 5 ? 5 : rows));
+        this.items = new ItemStackData[rows][9];
     }
 
-    public abstract ItemStack[][] getLines();
+    public abstract void registerItems();
 }

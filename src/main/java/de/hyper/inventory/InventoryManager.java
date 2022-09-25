@@ -1,7 +1,6 @@
 package de.hyper.inventory;
 
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,64 +10,45 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 @Getter
 public class InventoryManager implements Listener {
 
-    private static Map<Class, InventoryManager> instances = new HashMap<>();
-
-    public static InventoryManager getInstance(Class clazz) {
-        return instances.get(clazz);
-    }
-
     private Plugin plugin;
-    private String inventoryIdentifier;
-    private int id;
-    private Map<String, Inventory> inventories;
+    private Map<Player, List<Inventory>> playerInventories;
+    private Executor threadPool;
 
-    public InventoryManager(Plugin plugin, String inventoryIdentifier) {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+    public InventoryManager(Plugin plugin) {
         this.plugin = plugin;
-        if (!inventoryIdentifier.contains("§")) {
-            String s = "";
-            for (String a : inventoryIdentifier.split("")) {
-                s += "§" + a;
-            }
-            inventoryIdentifier = s;
-        }
-        this.inventoryIdentifier = inventoryIdentifier;
-        this.id = 0;
-        this.inventories = new HashMap<>();
-
-        instances.put(plugin.getClass(), this);
+        this.playerInventories = new HashMap<>();
+        this.threadPool = Executors.newCachedThreadPool();
     }
 
-    public String getNewID() {
-        String stringID = "";
-        for (char c : (id + "").toCharArray()) {
-            stringID += "§" + c;
-        }
-        while (stringID.length() < 8) {
-            stringID = "§0" + stringID;
-        }
-        id++;
-        if (id > 9999) {
-            id = 0;
-        }
-        return stringID;
+    public void aSync(Runnable runnable) {
+        this.threadPool.execute(runnable);
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        org.bukkit.inventory.Inventory bukkitInventory = event.getClickedInventory();
-        InventoryView inventoryView = event.getView();
-        if (bukkitInventory != null && inventoryView != null) {
-            if (inventoryView.getTitle() != null && inventoryView.getTitle().startsWith(inventoryIdentifier)) {
-                event.setCancelled(true);
-                String stringID = inventoryView.getTitle().substring(6, 14);
-                if (inventories.containsKey(stringID) && inventories.get(stringID).getButtons().containsKey(event.getSlot())) {
-                    inventories.get(stringID).getButtons().get(event.getSlot()).onClick(event.getAction());
+        Player player = (Player) event.getWhoClicked();
+        InventoryView view = event.getView();
+        if (playerInventories.containsKey(player)) {
+            List<Inventory> inventories = playerInventories.get(player);
+            for (Inventory inventory : inventories) {
+                if (inventory.getTitle().equals(view.getTitle())) {
+                    if (inventory.getButtons().containsKey(event.getSlot())) {
+                        if (inventory.isAnimated() && inventory.getAnimation().isAnimating()) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                        InventoryButton inventoryButton = inventory.getButtons().get(event.getSlot());
+                        event.setCancelled(inventoryButton.isCancelClick());
+                        inventoryButton.click(player, event.getAction());
+                    }
                 }
             }
         }
@@ -76,20 +56,21 @@ public class InventoryManager implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        org.bukkit.inventory.Inventory bukkitInventory = event.getInventory();
-        InventoryView inventoryView = event.getView();
-        if (bukkitInventory != null && inventoryView != null) {
-            if (inventoryView.getTitle() != null && inventoryView.getTitle().startsWith(inventoryIdentifier)) {
-                String stringID = inventoryView.getTitle().substring(6, 14);
-                if (inventories.containsKey(stringID)) {
-                    Inventory inventory = inventories.get(stringID);
-                    if (!inventory.isCloseable()) {
-                        inventory.open((Player) event.getPlayer());
+        Player player = (Player) event.getPlayer();
+        InventoryView view = event.getView();
+        if (playerInventories.containsKey(player)) {
+            List<Inventory> inventories = playerInventories.get(player);
+            for (Inventory inventory : inventories) {
+                if (inventory.getTitle().equals(view.getTitle())) {
+                    if (inventory.isAnimated() && inventory.getAnimation().isAnimating()) {
+                        player.openInventory(inventory.getInventoryBuilder().bukkitInventory);
+                        return;
+                    }
+                    if (inventory.isCloseable()) {
+                        inventories.remove(inventory);
+                        inventory.onClose();
                     } else {
-                        if (inventory.isInstantDelete()) {
-                            inventory.onClose();
-                            inventories.remove(stringID);
-                        }
+                        player.openInventory(inventory.getInventoryBuilder().bukkitInventory);
                     }
                 }
             }

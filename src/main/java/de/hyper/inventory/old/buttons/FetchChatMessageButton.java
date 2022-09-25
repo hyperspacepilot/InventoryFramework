@@ -1,6 +1,6 @@
-package de.hyper.inventory.buttons;
+package de.hyper.inventory.old.buttons;
 
-import de.hyper.inventory.InventoryManager;
+import de.hyper.inventory.old.InventoryManager;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

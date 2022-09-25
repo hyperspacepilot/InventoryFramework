@@ -1,6 +1,6 @@
-package de.hyper.inventory.buttons;
+package de.hyper.inventory.old.buttons;
 
-import de.hyper.inventory.InventoryButton;
+import de.hyper.inventory.old.InventoryButton;
 
 public abstract class Button extends InventoryButton {
 

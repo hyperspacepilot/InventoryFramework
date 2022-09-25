@@ -1,24 +1,23 @@
 package de.hyper.inventory.designs;
 
 import de.hyper.inventory.InventoryDesign;
-import org.bukkit.inventory.ItemStack;
+import de.hyper.inventory.ItemStackData;
 
 public class CleanBackGroundDesign extends InventoryDesign {
 
-    protected ItemStack backGroundMaterial;
+    protected ItemStackData backGroundItem;
 
-    public CleanBackGroundDesign(int rows, ItemStack backGroundMaterial) {
+    public CleanBackGroundDesign(int rows, ItemStackData backGroundItem) {
         super(rows);
-        this.backGroundMaterial = backGroundMaterial;
+        this.backGroundItem = backGroundItem;
     }
 
     @Override
-    public ItemStack[][] getLines() {
-        for (int a = 0; a < rows; a++) {
+    public void registerItems() {
+        for (int a = 0; a <= rows; a++) {
             for (int b = 0; b < 9; b++) {
-                lines[a][b] = backGroundMaterial;
+                items[a][b] = backGroundItem;
             }
         }
-        return lines;
     }
 }

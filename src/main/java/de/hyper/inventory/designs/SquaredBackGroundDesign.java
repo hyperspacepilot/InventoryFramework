@@ -1,27 +1,26 @@
 package de.hyper.inventory.designs;
 
 import de.hyper.inventory.InventoryDesign;
-import org.bukkit.inventory.ItemStack;
+import de.hyper.inventory.ItemStackData;
 
 public class SquaredBackGroundDesign extends InventoryDesign {
 
-    protected ItemStack firstBackGroundItemStack;
-    protected ItemStack secondBackGroundItemStack;
+    protected ItemStackData firstBackGroundItem;
+    protected ItemStackData secondBackGroundItem;
 
-    public SquaredBackGroundDesign(int rows, ItemStack firstBackGroundItemStack, ItemStack secondBackGroundItemStack) {
+    public SquaredBackGroundDesign(int rows, ItemStackData firstBackGroundItem, ItemStackData secondBackGroundItem) {
         super(rows);
-        this.firstBackGroundItemStack = firstBackGroundItemStack;
-        this.secondBackGroundItemStack = secondBackGroundItemStack;
+        this.firstBackGroundItem = firstBackGroundItem;
+        this.secondBackGroundItem = secondBackGroundItem;
     }
 
     @Override
-    public ItemStack[][] getLines() {
-        for (int a = 0; a < rows; a++) {
+    public void registerItems() {
+        for (int a = 0; a <= rows; a++) {
             for (int b = 0; b <= 8; b++) {
-                lines[a][b] = ((a % 2 == 0 && b % 2 == 0)
-                        || (a % 2 == 1 && b % 2 == 1)) ? firstBackGroundItemStack : secondBackGroundItemStack;
+                items[a][b] = ((a % 2 == 0 && b % 2 == 0)
+                        || (a % 2 == 1 && b % 2 == 1)) ? firstBackGroundItem : secondBackGroundItem;
             }
         }
-        return lines;
     }
 }
