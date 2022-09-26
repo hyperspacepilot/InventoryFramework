@@ -12,6 +12,8 @@ public abstract class Inventory {
 
     protected Player player;
     protected String title;
+    @Setter
+    protected String rawTitle;
     protected int rows;
     @Setter
     protected InventoryDesign design;
@@ -65,6 +67,7 @@ public abstract class Inventory {
     }
 
     public void registerButton(int slot, InventoryButton inventoryButton) {
+        inventoryButton.onAdd();
         this.buttons.put(slot, inventoryButton);
     }
 

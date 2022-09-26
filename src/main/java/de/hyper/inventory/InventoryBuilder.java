@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 @RequiredArgsConstructor
@@ -19,14 +20,16 @@ public class InventoryBuilder {
         this.inventory.fillInventory();
         this.inventory.setInventoryBuilder(this);
         this.player = inventory.getPlayer();
+        String rawTitle = "§0" + inventory.getTitle();
+        this.inventory.setRawTitle(rawTitle);
         this.bukkitInventory = Bukkit.createInventory(
-                null, inventory.getRows() * 9, "§0" + inventory.getTitle());
+                null, inventory.getRows() * 9, rawTitle);
         this.inventory.setCreated(true);
         this.player.closeInventory();
         this.player.openInventory(this.bukkitInventory);
         this.inventory.onOpen();
         if (!this.inventoryManager.getPlayerInventories().containsKey(player)) {
-            this.inventoryManager.getPlayerInventories().put(player, Arrays.asList(this.inventory));
+            this.inventoryManager.getPlayerInventories().put(player, new ArrayList<>(Arrays.asList(this.inventory)));
         } else {
             this.inventoryManager.getPlayerInventories().get(player).add(this.inventory);
         }
@@ -34,10 +37,28 @@ public class InventoryBuilder {
         buildAnimation();
     }
 
-    protected void buildDesign() {
+    protected InventoryBuilder buildDesign() {
         if (inventory.getDesign() != null) {
-
+            InventoryDesign design = inventory.getDesign();
+            design.registerItems();
+            ItemStackData[][] lines = design.getItems();
+            for (int i = 0; i < design.getRows(); i++) {
+                ItemStackData[] line = lines[i];
+                if (line != null) {
+                    for (int a = 0; a < 9; a++) {
+                        if (a + 1 <= line.length) {
+                            if (bukkitInventory.getItem((i * 9) + a) == null) {
+                                ItemStackData itemStackData = line[a];
+                                if (itemStackData != null) {
+                                    bukkitInventory.setItem((i * 9) + a, itemStackData.build());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
+        return this;
     }
 
     protected void buildAnimation() {
@@ -53,7 +74,6 @@ public class InventoryBuilder {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    this.inventory.animation.calculateTimeLeft(i);
                 }
                 this.bukkitInventory.setItem(data.getFirst(), data.getSecond().build());
             }
@@ -61,9 +81,10 @@ public class InventoryBuilder {
         });
     }
 
-    public void executeUpdate() {
+    public InventoryBuilder executeUpdate() {
         this.inventory.clearInventory();
         this.inventory.fillInventory();
-        buildAnimation();
+        buildDesign().buildAnimation();
+        return this;
     }
 }

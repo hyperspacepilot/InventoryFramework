@@ -9,15 +9,15 @@ import org.bukkit.event.inventory.InventoryAction;
 public abstract class InventoryButton {
 
     @Setter
-    protected boolean cancelClick;
+    protected boolean cancelClick = true;
     protected Player player;
 
     public void click(Player player, InventoryAction inventoryAction) {
         this.player = player;
-        onClick(player, inventoryAction);
+        onClick(inventoryAction);
     }
 
     public abstract void onAdd();
 
-    public abstract void onClick(Player player, InventoryAction inventoryAction);
+    public abstract void onClick(InventoryAction inventoryAction);
 }

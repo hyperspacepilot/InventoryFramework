@@ -16,7 +16,7 @@ public class SquaredBackGroundDesign extends InventoryDesign {
 
     @Override
     public void registerItems() {
-        for (int a = 0; a <= rows; a++) {
+        for (int a = 0; a < rows; a++) {
             for (int b = 0; b <= 8; b++) {
                 items[a][b] = ((a % 2 == 0 && b % 2 == 0)
                         || (a % 2 == 1 && b % 2 == 1)) ? firstBackGroundItem : secondBackGroundItem;

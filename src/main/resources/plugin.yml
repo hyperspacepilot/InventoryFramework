@@ -1,0 +1,7 @@
+name: Inventory-Framework
+version: 1.0.0-beta
+author: hyperspace_pilot
+api-version: 1.18
+main: de.hyper.inventory.InventoryFramework
+commands:
+  testinventory:

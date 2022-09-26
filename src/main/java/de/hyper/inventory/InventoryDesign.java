@@ -12,7 +12,7 @@ public abstract class InventoryDesign {
     protected boolean animated;
 
     public InventoryDesign(int rows) {
-        this.rows = (rows < 0 ? 0 : (rows > 5 ? 5 : rows));
+        this.rows = (rows <= 0 ? 1 : (rows > 6 ? 6 : rows));
         this.items = new ItemStackData[rows][9];
     }
 

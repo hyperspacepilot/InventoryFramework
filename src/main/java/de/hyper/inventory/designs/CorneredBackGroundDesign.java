@@ -20,13 +20,13 @@ public class CorneredBackGroundDesign extends InventoryDesign {
 
     @Override
     public void registerItems() {
-        for (int a = 0; a <= rows; a++) {
+        for (int a = 0; a < rows; a++) {
             for (int b = 0; b <= 8; b++) {
                 items[a][b] = (((a == 0 && (b == 0 || b == 1 || b == 7 || b == 8))
                         || (a == 1 && (b == 0 || b == 8))
-                        || (a == (rows - 1) && (b == 0 || b == 8)) || (a == rows &&
+                        || (a == (rows - 2) && (b == 0 || b == 8)) || (a == (rows-1) &&
                         (b == 0 || b == 1 || b == 7 || b == 8))) ?
-                        ((((a == 0 || a == rows) && (b == 0 || b == 8))) ?
+                        ((((a == 0 || a == (rows-1)) && (b == 0 || b == 8))) ?
                                 inCornerBackGroundItem : outCornerBackGroundItem)
                         : backGroundItem);
             }
