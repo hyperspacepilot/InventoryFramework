@@ -36,8 +36,8 @@
 
     <distributionManagement>
         <repository>
-            <id>flammenfuchs-repo-lotoos</id>
-            <url>https://repo.flammenfuchs.de/lotoos</url>
+            <id>flammenfuchs-repo-public</id>
+            <url>https://repo.flammenfuchs.de/public</url>
         </repository>
     </distributionManagement>
 
