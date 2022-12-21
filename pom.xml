@@ -6,7 +6,7 @@
 
     <groupId>de.hyperspace_pilot</groupId>
     <artifactId>InventoryFramework</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -33,5 +33,12 @@
             <version>1.18.20</version>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>flammenfuchs-repo-lotoos</id>
+            <url>https://repo.flammenfuchs.de/lotoos</url>
+        </repository>
+    </distributionManagement>
 
 </project>
