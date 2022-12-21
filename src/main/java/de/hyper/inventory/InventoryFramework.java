@@ -25,17 +25,14 @@ public class InventoryFramework extends JavaPlugin {
     @Override
     public void onEnable() {
         this.inventoryManager = createInventoryManager(this);
-        this.getCommand("testinventory").setExecutor(new CommandExecutor() {
-            @Override
-            public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-                if (commandSender instanceof Player player) {
-                    if (player.hasPermission("admin.admin.testinventory")) {
-                        TestInventory testInventory = new TestInventory(player);
-                        createInventoryBuilder(inventoryManager).buildInventory(testInventory);
-                    }
+        this.getCommand("testinventory").setExecutor((commandSender, command, s, strings) -> {
+            if (commandSender instanceof Player player) {
+                if (player.hasPermission("inventoryframework.testinventory")) {
+                    TestInventory testInventory = new TestInventory(player);
+                    createInventoryBuilder(inventoryManager).buildInventory(testInventory);
                 }
-                return false;
             }
+            return false;
         });
     }
 
