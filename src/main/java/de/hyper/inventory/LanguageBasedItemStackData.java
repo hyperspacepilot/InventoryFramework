@@ -6,12 +6,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class LanguageBasedItemStackData extends ItemStackData {
 
     protected Player player;
 
-    public LanguageBasedItemStackData(String displayName, String[] lore, int amount, Material material, ItemFlag[] itemFlags, boolean unbreakable, List<Enchantment> enchantments, int damage) {
+    public LanguageBasedItemStackData(String displayName, String[] lore, int amount, Material material, ItemFlag[] itemFlags, boolean unbreakable, Map<Enchantment, Integer> enchantments, int damage) {
         super(displayName, lore, amount, material, itemFlags, unbreakable, enchantments, damage);
     }
 
