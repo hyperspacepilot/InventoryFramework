@@ -7,10 +7,10 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @AllArgsConstructor
@@ -22,12 +22,28 @@ public abstract class ItemStackData {
     protected Material material;
     protected ItemFlag[] itemFlags;
     protected boolean unbreakable;
-    protected List<Enchantment> enchantments;
+    protected Map<Enchantment, Integer> enchantmentsAndLevels;
     protected int damage;
 
     public ItemStackData(Material material, int amount) {
         this.material = material;
         this.amount = amount;
+    }
+
+    public ItemStack build() {
+        ItemStack itemStack = new ItemStack(material, amount);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setUnbreakable(unbreakable);
+        itemMeta.addItemFlags(itemFlags);
+        for (Enchantment enchantment : enchantmentsAndLevels.keySet()) {
+            itemMeta.addEnchant(enchantment, enchantmentsAndLevels.get(enchantment), true);
+        }
+        if (itemMeta instanceof Damageable) {
+            Damageable damageable = (Damageable) itemMeta;
+            damageable.setDamage(damage);
+        }
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
     public ItemStackData setDisplayName(String displayName) {
@@ -55,24 +71,20 @@ public abstract class ItemStackData {
         return this;
     }
 
-    public ItemStackData setEnchantments(Enchantment... enchantments) {
-        this.enchantments = new ArrayList<>(Arrays.asList(enchantments));
+    public ItemStackData setEnchantment(Enchantment enchantment, int level) {
+        if (enchantmentsAndLevels == null) enchantmentsAndLevels = new HashMap<>();
+        enchantmentsAndLevels.put(enchantment, level);
         return this;
     }
 
-    public ItemStackData setEnchantments(List<Enchantment> enchantments) {
-        this.enchantments = enchantments;
+    public ItemStackData setEnchantments(Map<Enchantment, Integer> enchantmentsAndLevels) {
+        this.enchantmentsAndLevels = enchantmentsAndLevels;
         return this;
     }
 
     public ItemStackData setDamage(int damage) {
         this.damage = damage;
         return this;
-    }
-
-    public ItemStack build() {
-        ItemStack itemStack = new ItemStack(material, amount);
-        return itemStack;
     }
 
     public abstract void buildStrings();
