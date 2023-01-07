@@ -16,14 +16,14 @@ import java.util.*;
 @AllArgsConstructor
 public abstract class ItemStackData {
 
-    protected String displayName;
-    protected String[] lore;
+    protected String displayName = "";
+    protected String[] lore = new String[] {""};
     protected int amount;
     protected Material material;
-    protected ItemFlag[] itemFlags;
-    protected boolean unbreakable;
-    protected Map<Enchantment, Integer> enchantmentsAndLevels;
-    protected int damage;
+    protected ItemFlag[] itemFlags = new ItemFlag[0];
+    protected boolean unbreakable = false;
+    protected Map<Enchantment, Integer> enchantmentsAndLevels = new HashMap<>();
+    protected int damage = 0;
 
     public ItemStackData(Material material, int amount) {
         this.material = material;
