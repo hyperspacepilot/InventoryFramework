@@ -39,9 +39,9 @@ public abstract class LanguagedItemData extends ItemData {
             this.displayName = getText(displayName);
             List<String> list = new ArrayList<>();
             for (String s : this.lore) {
-                Collections.addAll(list, getText(s).split("\\n"));
+                Collections.addAll(list, getText(s).split("/n/"));
             }
-            lore = new String[list.size() - 1];
+            lore = new String[list.size()];
             int i = 0;
             for (String s : list) {
                 lore[i++] = s;
