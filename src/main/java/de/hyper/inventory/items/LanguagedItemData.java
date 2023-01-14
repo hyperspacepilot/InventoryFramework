@@ -4,6 +4,9 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,7 +29,7 @@ public abstract class LanguagedItemData extends ItemData {
         super(material, displayName);
     }
 
-    public LanguagedItemData(Material material, Map<Enchantment, Integer> enchantmentsAndLevels, int count, ItemFlag[] itemFlags, boolean unbreakable, int damage, String displayName, String lore[]) {
+    public LanguagedItemData(Material material, Map<Enchantment, Integer> enchantmentsAndLevels, int count, ItemFlag[] itemFlags, boolean unbreakable, int damage, String displayName, String[] lore) {
         super(material, enchantmentsAndLevels, count, itemFlags, unbreakable, damage, displayName, lore);
     }
 
@@ -34,10 +37,14 @@ public abstract class LanguagedItemData extends ItemData {
     public boolean transformStrings() {
         try {
             this.displayName = getText(displayName);
-            int i = 0;
+            List<String> list = new ArrayList<>();
             for (String s : this.lore) {
-                this.lore[i] = getText(this.lore[i]);
-                i++;
+                Collections.addAll(list, getText(s).split("\\n"));
+            }
+            lore = new String[list.size() - 1];
+            int i = 0;
+            for (String s : list) {
+                lore[i++] = s;
             }
         } catch (Exception e) {
             return false;
