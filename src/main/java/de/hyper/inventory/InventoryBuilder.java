@@ -52,9 +52,10 @@ public class InventoryBuilder {
                     for (int a = 0; a < 9; a++) {
                         if (a + 1 <= line.length) {
                             if (bukkitInventory.getItem((i * 9) + a) == null) {
-                                ItemData itemStackData = line[a];
-                                if (itemStackData != null) {
-                                    bukkitInventory.setItem((i * 9) + a, itemStackData.build());
+                                ItemData itemData = line[a];
+                                if (itemData != null) {
+                                    itemData.transformStrings();
+                                    bukkitInventory.setItem((i * 9) + a, itemData.build());
                                 }
                             }
                         }
@@ -79,6 +80,7 @@ public class InventoryBuilder {
                         e.printStackTrace();
                     }
                 }
+                data.getSecond().transformStrings();
                 this.bukkitInventory.setItem(data.getFirst(), data.getSecond().build());
             }
             this.inventory.animation.setAnimating(false);
