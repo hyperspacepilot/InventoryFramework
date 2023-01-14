@@ -11,6 +11,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ import java.util.concurrent.Executors;
 public class InventoryManager implements Listener {
 
     private Plugin plugin;
-    private Map<Player, List<Inventory>> playerInventories;
+    private Map<Player, ArrayList<Inventory>> playerInventories;
     private Executor threadPool;
 
     public InventoryManager(Plugin plugin) {
@@ -46,7 +47,7 @@ public class InventoryManager implements Listener {
         Player player = (Player) event.getWhoClicked();
         InventoryView view = event.getView();
         if (playerInventories.containsKey(player)) {
-            List<Inventory> inventories = playerInventories.get(player);
+            ArrayList<Inventory> inventories = playerInventories.get(player);
             for (Inventory inventory : inventories) {
                 if (inventory.getRawTitle().equals(view.getTitle())) {
                     if (inventory.getButtons().containsKey(event.getSlot())) {
@@ -70,7 +71,7 @@ public class InventoryManager implements Listener {
         Player player = (Player) event.getPlayer();
         InventoryView view = event.getView();
         if (playerInventories.containsKey(player)) {
-            List<Inventory> inventories = playerInventories.get(player);
+            ArrayList<Inventory> inventories = playerInventories.get(player);
             for (Inventory inventory : inventories) {
                 if (inventory.getRawTitle().equals(view.getTitle())) {
                     if (inventory.isAnimated() && inventory.getAnimation().isAnimating()) {

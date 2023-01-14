@@ -6,7 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * @author hyperspace_pilot
@@ -33,10 +32,9 @@ public class InventoryBuilder {
         this.player.openInventory(this.bukkitInventory);
         this.inventory.onOpen();
         if (!this.inventoryManager.getPlayerInventories().containsKey(player)) {
-            this.inventoryManager.getPlayerInventories().put(player, new ArrayList<>(Collections.singletonList(this.inventory)));
-        } else {
-            this.inventoryManager.getPlayerInventories().get(player).add(this.inventory);
+            this.inventoryManager.getPlayerInventories().put(player, new ArrayList<>());
         }
+        this.inventoryManager.getPlayerInventories().get(player).add(this.inventory);
         buildDesign();
         buildAnimation();
     }
