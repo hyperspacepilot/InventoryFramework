@@ -2,11 +2,17 @@ package de.hyper.inventory;
 
 import de.hyper.inventory.buttons.Button;
 import de.hyper.inventory.designs.TopBottomLineBackGroundDesign;
+import de.hyper.inventory.items.GlassPane;
+import de.hyper.inventory.items.ItemData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
 
 import java.util.List;
 
+/**
+ * @author hyperspace_pilot
+ * @param <T> Type to be choosen.
+ */
 public abstract class ChooseInventory<T> extends Inventory {
 
     private List<T> list;
@@ -48,5 +54,5 @@ public abstract class ChooseInventory<T> extends Inventory {
 
     public abstract void selected(T t);
 
-    public abstract ItemStackData buildItemStackData(T t);
+    public abstract ItemData buildItemStackData(T t);
 }

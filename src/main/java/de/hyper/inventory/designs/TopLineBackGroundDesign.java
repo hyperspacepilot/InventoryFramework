@@ -1,14 +1,17 @@
 package de.hyper.inventory.designs;
 
 import de.hyper.inventory.InventoryDesign;
-import de.hyper.inventory.ItemStackData;
+import de.hyper.inventory.items.ItemData;
 
+/**
+ * @author hyperspace_pilot
+ */
 public class TopLineBackGroundDesign extends InventoryDesign {
 
-    protected ItemStackData backGroundItem;
-    protected ItemStackData borderBackGroundItem;
+    protected ItemData backGroundItem;
+    protected ItemData borderBackGroundItem;
 
-    public TopLineBackGroundDesign(int rows, ItemStackData backGroundItem, ItemStackData borderBackGroundItem) {
+    public TopLineBackGroundDesign(int rows, ItemData backGroundItem, ItemData borderBackGroundItem) {
         super(rows);
         this.backGroundItem = backGroundItem;
         this.borderBackGroundItem = borderBackGroundItem;

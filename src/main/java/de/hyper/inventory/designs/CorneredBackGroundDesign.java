@@ -1,17 +1,20 @@
 package de.hyper.inventory.designs;
 
 import de.hyper.inventory.InventoryDesign;
-import de.hyper.inventory.ItemStackData;
+import de.hyper.inventory.items.ItemData;
 
+/**
+ * @author hyperspace_pilot
+ */
 public class CorneredBackGroundDesign extends InventoryDesign {
 
-    protected ItemStackData backGroundItem;
-    protected ItemStackData inCornerBackGroundItem;
-    protected ItemStackData outCornerBackGroundItem;
+    protected ItemData backGroundItem;
+    protected ItemData inCornerBackGroundItem;
+    protected ItemData outCornerBackGroundItem;
 
     public CorneredBackGroundDesign(
-            int rows, ItemStackData backGroundItem,
-            ItemStackData inCornerBackGroundItem, ItemStackData outCornerBackGroundItem) {
+            int rows, ItemData backGroundItem,
+            ItemData inCornerBackGroundItem, ItemData outCornerBackGroundItem) {
         super((rows < 4 ? 4 : (rows > 5 ? 5 : rows)));
         this.backGroundItem = backGroundItem;
         this.inCornerBackGroundItem = inCornerBackGroundItem;

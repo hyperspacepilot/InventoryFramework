@@ -1,6 +1,7 @@
 package de.hyper.inventory;
 
 import de.hyper.inventory.buttons.Button;
+import de.hyper.inventory.items.ItemData;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
@@ -8,6 +9,10 @@ import org.bukkit.event.inventory.InventoryAction;
 
 import java.util.List;
 
+/**
+ * @author hyperspace_pilot
+ * @param <T> Type of Objects in InfinityInventory
+ */
 @Getter
 @Setter
 public abstract class InfinityInventory<T> extends Inventory {
@@ -20,7 +25,7 @@ public abstract class InfinityInventory<T> extends Inventory {
         super(player, title, rows);
     }
 
-    public void registerNextPageButton(int row, int slot, ItemStackData itemStackData) {
+    public void registerNextPageButton(int row, int slot, ItemData itemStackData) {
         registerButtonAndItem(row, slot, new Button() {
             @Override
             public void onClick(InventoryAction inventoryAction) {
@@ -30,7 +35,7 @@ public abstract class InfinityInventory<T> extends Inventory {
         }, itemStackData);
     }
 
-    public void registerLastPageButton(int row, int slot, ItemStackData itemStackData) {
+    public void registerLastPageButton(int row, int slot, ItemData itemStackData) {
         registerButtonAndItem(row, slot, new Button() {
             @Override
             public void onClick(InventoryAction inventoryAction) {

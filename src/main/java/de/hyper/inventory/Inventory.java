@@ -1,5 +1,6 @@
 package de.hyper.inventory;
 
+import de.hyper.inventory.items.ItemData;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
@@ -7,6 +8,9 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author hyperspace_pilot
+ */
 @Getter
 public abstract class Inventory {
 
@@ -45,21 +49,21 @@ public abstract class Inventory {
         this.animation = new InventoryAnimation();
     }
 
-    public void registerButtonAndItem(int row, int slot, InventoryButton inventoryButton, ItemStackData itemStackData) {
-        registerButtonAndItem(row, slot, inventoryButton, itemStackData, 0L);
+    public void registerButtonAndItem(int row, int slot, InventoryButton inventoryButton, ItemData itemData) {
+        registerButtonAndItem(row, slot, inventoryButton, itemData, 0L);
     }
 
-    public void registerButtonAndItem(int row, int slot, InventoryButton inventoryButton, ItemStackData itemStackData, long timeToWait) {
-        registerButtonAndItem(row * 9 + slot, inventoryButton, itemStackData, timeToWait);
+    public void registerButtonAndItem(int row, int slot, InventoryButton inventoryButton, ItemData itemData, long timeToWait) {
+        registerButtonAndItem(row * 9 + slot, inventoryButton, itemData, timeToWait);
     }
 
-    public void registerButtonAndItem(int slot, InventoryButton inventoryButton, ItemStackData itemStackData) {
-        registerButtonAndItem(slot, inventoryButton, itemStackData, 0L);
+    public void registerButtonAndItem(int slot, InventoryButton inventoryButton, ItemData itemData) {
+        registerButtonAndItem(slot, inventoryButton, itemData, 0L);
     }
 
-    public void registerButtonAndItem(int slot, InventoryButton inventoryButton, ItemStackData itemStackData, long timeToWait) {
+    public void registerButtonAndItem(int slot, InventoryButton inventoryButton, ItemData itemData, long timeToWait) {
         registerButton(slot, inventoryButton);
-        registerItem(slot, itemStackData, timeToWait);
+        registerItem(slot, itemData, timeToWait);
     }
 
     public void registerButton(int row, int slot, InventoryButton inventoryButton) {
@@ -71,28 +75,28 @@ public abstract class Inventory {
         this.buttons.put(slot, inventoryButton);
     }
 
-    public void registerItem(int row, int slot, ItemStackData itemStackData) {
-        registerItem(row * 9 + slot, itemStackData);
+    public void registerItem(int row, int slot, ItemData itemData) {
+        registerItem(row * 9 + slot, itemData);
     }
 
-    public void registerItem(int slot, ItemStackData itemStackData) {
-        registerItem(slot, itemStackData, 0L);
+    public void registerItem(int slot, ItemData itemData) {
+        registerItem(slot, itemData, 0L);
     }
 
-    public void registerItem(int row, int slot, ItemStackData itemStackData, long timeToWait) {
-        registerItem(row * 9 + slot, itemStackData, timeToWait);
+    public void registerItem(int row, int slot, ItemData itemData, long timeToWait) {
+        registerItem(row * 9 + slot, itemData, timeToWait);
     }
 
-    public void registerItem(int slot, ItemStackData itemStackData, long timeToWait) {
-        this.animation.registerSlot(slot, itemStackData, timeToWait);
+    public void registerItem(int slot, ItemData itemData, long timeToWait) {
+        this.animation.registerSlot(slot, itemData, timeToWait);
     }
 
-    public void clearSlot(int row, int slot, ItemStackData itemStackData) {
-        clearSlot(row * 9 + slot, itemStackData);
+    public void clearSlot(int row, int slot, ItemData itemData) {
+        clearSlot(row * 9 + slot, itemData);
     }
 
-    public void clearSlot(int slot, ItemStackData itemStackData) {
-        this.inventoryBuilder.bukkitInventory.setItem(slot, itemStackData.build());
+    public void clearSlot(int slot, ItemData itemData) {
+        this.inventoryBuilder.bukkitInventory.setItem(slot, itemData.build());
     }
 
     public abstract Inventory fillInventory();

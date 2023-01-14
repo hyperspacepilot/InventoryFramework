@@ -5,6 +5,9 @@ import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
 
+/**
+ * @author hyperspace_pilot
+ */
 @Getter
 public abstract class InventoryButton {
 

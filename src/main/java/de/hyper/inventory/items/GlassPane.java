@@ -1,10 +1,13 @@
-package de.hyper.inventory;
+package de.hyper.inventory.items;
 
 import org.bukkit.Material;
 
+/**
+ * @author hyperspace_pilot
+ */
 public class GlassPane {
 	
-	public static final ItemStackData C0 = get(Material.WHITE_STAINED_GLASS_PANE),
+	public static final ItemData C0 = get(Material.WHITE_STAINED_GLASS_PANE),
 			C1 = get(Material.ORANGE_STAINED_GLASS_PANE),
 			C2 = get(Material.MAGENTA_STAINED_GLASS_PANE),
 			C3 = get(Material.LIGHT_BLUE_STAINED_GLASS_PANE),
@@ -20,7 +23,7 @@ public class GlassPane {
 			C13 = get(Material.GREEN_STAINED_GLASS_PANE),
 			C14 = get(Material.RED_STAINED_GLASS_PANE),
 			C15 = get(Material.BLACK_STAINED_GLASS_PANE);
-	public static final ItemStackData WHITE = C0,
+	public static final ItemData WHITE = C0,
 			ORANGE = C1,
 			MAGENTA = C2,
 			LIGHT_BLUE = C3,
@@ -37,8 +40,8 @@ public class GlassPane {
 			RED = C14,
 			BLACK = C15;
 	
-	private static final ItemStackData get(Material mat) {
-		ItemStackData itemStackData = new SimpleItemStackData(mat, 1);
+	private static final ItemData get(Material mat) {
+		ItemData itemStackData = new SimpleItemData(mat, 1);
 		itemStackData.setDisplayName("§a");
 		return itemStackData;
 	}

@@ -4,6 +4,9 @@ import org.bukkit.event.inventory.InventoryAction;
 
 import java.util.HashMap;
 
+/**
+ * @author hyperspace_pilot
+ */
 public class InventoryActionMultiButton extends MultiButton<InventoryAction> {
 
     public InventoryActionMultiButton() {

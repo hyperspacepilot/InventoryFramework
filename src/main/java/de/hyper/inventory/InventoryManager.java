@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+/**
+ * @author hyperspace_pilot
+ */
 @Getter
 public class InventoryManager implements Listener {
 

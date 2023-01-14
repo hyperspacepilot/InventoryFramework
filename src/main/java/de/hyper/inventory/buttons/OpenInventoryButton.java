@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
 
+/**
+ * @author hyperspace_pilot
+ */
 @AllArgsConstructor
 public class OpenInventoryButton extends Button {
 

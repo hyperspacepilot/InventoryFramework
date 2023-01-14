@@ -10,6 +10,9 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 
+/**
+ * @author hyperspace_pilot
+ */
 @AllArgsConstructor
 public abstract class FetchChatMessageButton extends Button implements Listener {
 

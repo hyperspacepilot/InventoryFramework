@@ -1,14 +1,17 @@
 package de.hyper.inventory.designs;
 
 import de.hyper.inventory.InventoryDesign;
-import de.hyper.inventory.ItemStackData;
+import de.hyper.inventory.items.ItemData;
 
+/**
+ * @author hyperspace_pilot
+ */
 public class SquaredBackGroundDesign extends InventoryDesign {
 
-    protected ItemStackData firstBackGroundItem;
-    protected ItemStackData secondBackGroundItem;
+    protected ItemData firstBackGroundItem;
+    protected ItemData secondBackGroundItem;
 
-    public SquaredBackGroundDesign(int rows, ItemStackData firstBackGroundItem, ItemStackData secondBackGroundItem) {
+    public SquaredBackGroundDesign(int rows, ItemData firstBackGroundItem, ItemData secondBackGroundItem) {
         super(rows);
         this.firstBackGroundItem = firstBackGroundItem;
         this.secondBackGroundItem = secondBackGroundItem;

@@ -9,6 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * @author hyperspace_pilot
+ */
 @Getter
 public class InventoryFramework extends JavaPlugin {
 

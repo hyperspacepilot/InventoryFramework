@@ -1,12 +1,16 @@
 package de.hyper.inventory;
 
+import de.hyper.inventory.items.ItemData;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
+/**
+ * @author hyperspace_pilot
+ */
 @RequiredArgsConstructor
 public class InventoryBuilder {
 
@@ -29,7 +33,7 @@ public class InventoryBuilder {
         this.player.openInventory(this.bukkitInventory);
         this.inventory.onOpen();
         if (!this.inventoryManager.getPlayerInventories().containsKey(player)) {
-            this.inventoryManager.getPlayerInventories().put(player, new ArrayList<>(Arrays.asList(this.inventory)));
+            this.inventoryManager.getPlayerInventories().put(player, new ArrayList<>(Collections.singletonList(this.inventory)));
         } else {
             this.inventoryManager.getPlayerInventories().get(player).add(this.inventory);
         }
@@ -41,14 +45,14 @@ public class InventoryBuilder {
         if (inventory.getDesign() != null) {
             InventoryDesign design = inventory.getDesign();
             design.registerItems();
-            ItemStackData[][] lines = design.getItems();
+            ItemData[][] lines = design.getItems();
             for (int i = 0; i < design.getRows(); i++) {
-                ItemStackData[] line = lines[i];
+                ItemData[] line = lines[i];
                 if (line != null) {
                     for (int a = 0; a < 9; a++) {
                         if (a + 1 <= line.length) {
                             if (bukkitInventory.getItem((i * 9) + a) == null) {
-                                ItemStackData itemStackData = line[a];
+                                ItemData itemStackData = line[a];
                                 if (itemStackData != null) {
                                     bukkitInventory.setItem((i * 9) + a, itemStackData.build());
                                 }
@@ -67,7 +71,7 @@ public class InventoryBuilder {
                 this.inventory.animation.setAnimating(true);
             }
             for (int i = 0; i < this.inventory.animation.animationData.size(); i++) {
-                Tuple<Integer, ItemStackData, Long> data = this.inventory.animation.animationData.get(i);
+                Tuple<Integer, ItemData, Long> data = this.inventory.animation.animationData.get(i);
                 if (inventory.isAnimated() && data.getThird() > 0L) {
                     try {
                         Thread.sleep(data.getThird());
