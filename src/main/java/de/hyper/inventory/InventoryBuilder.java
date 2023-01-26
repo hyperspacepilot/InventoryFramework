@@ -1,6 +1,7 @@
 package de.hyper.inventory;
 
 import de.hyper.inventory.items.ItemData;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 /**
  * @author hyperspace_pilot
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Getter
 public class InventoryBuilder {
 
     protected final InventoryManager inventoryManager;

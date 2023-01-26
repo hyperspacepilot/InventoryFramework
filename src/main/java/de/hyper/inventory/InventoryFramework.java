@@ -2,6 +2,7 @@ package de.hyper.inventory;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,10 +20,16 @@ public class InventoryFramework extends JavaPlugin {
     private static InventoryFramework instance;
 
     private InventoryManager inventoryManager;
+    private ServerVersion serverVersion;
 
     @Override
     public void onLoad() {
         instance = this;
+        if (Bukkit.getVersion().contains("1.12")) {
+            serverVersion = ServerVersion.V1_12;
+        } else {
+            serverVersion = ServerVersion.V1_18;
+        }
     }
 
     @Override
@@ -45,7 +52,8 @@ public class InventoryFramework extends JavaPlugin {
     }
 
     public static InventoryManager createInventoryManager(Plugin plugin) {
-        return new InventoryManager(plugin);
+        //return new InventoryManager(plugin);
+        return null;
     }
 
     public static InventoryBuilder createInventoryBuilder(InventoryManager inventoryManager) {
