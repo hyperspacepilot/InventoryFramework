@@ -1,5 +1,7 @@
 package de.hyper.inventory;
 
+import de.hyper.inventory.managers.InventoryManager_1_12;
+import de.hyper.inventory.managers.InventoryManager_1_18;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -14,16 +16,13 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author hyperspace_pilot
  */
 @Getter
-public class InventoryFramework extends JavaPlugin {
+public class InventoryFramework {
 
     @Getter @Setter
     private static InventoryFramework instance;
-
-    private InventoryManager inventoryManager;
     private ServerVersion serverVersion;
 
-    @Override
-    public void onLoad() {
+    public void setUp() {
         instance = this;
         if (Bukkit.getVersion().contains("1.12")) {
             serverVersion = ServerVersion.V1_12;
@@ -32,28 +31,9 @@ public class InventoryFramework extends JavaPlugin {
         }
     }
 
-    @Override
-    public void onEnable() {
-        this.inventoryManager = createInventoryManager(this);
-        this.getCommand("testinventory").setExecutor((commandSender, command, s, strings) -> {
-            if (commandSender instanceof Player player) {
-                if (player.hasPermission("inventoryframework.testinventory")) {
-                    TestInventory testInventory = new TestInventory(player);
-                    createInventoryBuilder(inventoryManager).buildInventory(testInventory);
-                }
-            }
-            return false;
-        });
-    }
-
-    @Override
-    public void onDisable() {
-
-    }
-
     public static InventoryManager createInventoryManager(Plugin plugin) {
-        //return new InventoryManager(plugin);
-        return null;
+        if (InventoryFramework.get().getServerVersion().equals(ServerVersion.V1_12)) return new InventoryManager_1_12(plugin);
+        return new InventoryManager_1_18(plugin);
     }
 
     public static InventoryBuilder createInventoryBuilder(InventoryManager inventoryManager) {
