@@ -96,7 +96,14 @@ public abstract class Inventory {
     }
 
     public void clearSlot(int slot, ItemData itemData) {
-        this.inventoryBuilder.bukkitInventory.setItem(slot, itemData.build());
+        this.buttons.remove(slot);
+        if (this.inventoryBuilder.bukkitInventory != null) {
+            if (itemData != null) {
+                this.inventoryBuilder.bukkitInventory.setItem(slot, itemData.build());
+            } else {
+                this.inventoryBuilder.bukkitInventory.setItem(slot, null);
+            }
+        }
     }
 
     public abstract Inventory fillInventory();

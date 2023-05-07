@@ -5,12 +5,7 @@ import de.hyper.inventory.managers.InventoryManager_1_18;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author hyperspace_pilot
@@ -24,10 +19,15 @@ public class InventoryFramework {
 
     public void setUp() {
         instance = this;
-        if (Bukkit.getVersion().contains("1.12")) {
-            serverVersion = ServerVersion.V1_12;
-        } else {
+        String version = Bukkit.getVersion();
+        if (version.contains("1.19")) {
+            serverVersion = ServerVersion.V1_19;
+        } else if (version.contains("1.18")) {
             serverVersion = ServerVersion.V1_18;
+        } else if (version.contains("1.12")) {
+            serverVersion = ServerVersion.V1_12;
+        } else if (version.contains("1.8")) {
+            serverVersion = ServerVersion.V1_8;
         }
     }
 

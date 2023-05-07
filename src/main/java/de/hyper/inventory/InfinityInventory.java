@@ -25,23 +25,23 @@ public abstract class InfinityInventory<T> extends Inventory {
         super(player, title, rows);
     }
 
-    public void registerNextPageButton(int row, int slot, ItemData itemStackData) {
+    public void registerNextPageButton(int row, int slot, ItemData itemData) {
         registerButtonAndItem(row, slot, new Button() {
             @Override
             public void onClick(InventoryAction inventoryAction) {
                 currentPage++;
                 inventoryBuilder.executeUpdate();
             }
-        }, itemStackData);
+        }, itemData);
     }
 
-    public void registerLastPageButton(int row, int slot, ItemData itemStackData) {
+    public void registerLastPageButton(int row, int slot, ItemData itemData) {
         registerButtonAndItem(row, slot, new Button() {
             @Override
             public void onClick(InventoryAction inventoryAction) {
                 currentPage--;
                 inventoryBuilder.executeUpdate();
             }
-        }, itemStackData);
+        }, itemData);
     }
 }

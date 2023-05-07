@@ -1,6 +1,5 @@
 package de.hyper.inventory.items;
 
-import de.hyper.inventory.items.impl.ItemData_1_12;
 import org.bukkit.Material;
 
 /**
@@ -48,11 +47,9 @@ public class GlassPane {
         } catch (Exception e) {
             material = Material.valueOf("STAINED_GLASS_PANE");
         }
-        ItemData itemStackData = ItemData.simple(material);
-        if (itemStackData instanceof ItemData_1_12 itemData_1_12) {
-            itemData_1_12.setData((byte) data);
-        }
-        itemStackData.setDisplayName("§a");
-        return itemStackData;
+        ItemData itemData = new SimpleItemData(material);
+        itemData.setDataID((byte) data);
+        itemData.setDisplayName("§a");
+        return itemData;
     }
 }

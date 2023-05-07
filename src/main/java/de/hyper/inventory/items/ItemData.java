@@ -1,46 +1,74 @@
 package de.hyper.inventory.items;
 
-import de.hyper.inventory.InventoryFramework;
-import de.hyper.inventory.ServerVersion;
-import de.hyper.inventory.items.impl.SimpleItemData_1_12;
-import de.hyper.inventory.items.impl.SimpleItemData_1_18;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Map;
 
 /**
  * @author hyperspace_pilot
  */
 public interface ItemData {
 
+    /**
+     *
+     * @param displayName = insert raw text or language-key here
+     * @param languagePlaceholderValues = optional objects to fill placeholders when using language-system
+     * @return this ItemData object
+     */
+    ItemData setDisplayName(String displayName, Object... languagePlaceholderValues);
+
+    /**
+     *
+     * @param lore = insert raw text or language-key here
+     * @param languagePlaceholderValues = optional objects to fill placeholders when using language-system
+     * @return this ItemData object
+     */
+    ItemData addLore(String lore, Object... languagePlaceholderValues);
+
+    ItemData addItemFlags(ItemFlag... itemFlags);
+
+    ItemData addEnchantment(Enchantment enchantment, int level);
+
+    /**
+     * Method to define the texture of a skull. Only works if material is a Skull.
+     * Only use skullOwner or skullValue, not both!
+     * @param skullOwner = name of player, which texture should be used.
+     * @return this ItemData object
+     */
+    ItemData setSkullOwner(String skullOwner);
+
+    String getSkullOwner();
+
+    /**
+     * Method to define the texture of a skull. Only works if material is a Skull.
+     * Only use skullOwner or skullValue, not both!
+     * @param skullValue = value-base64-string, which represents the texture.
+     * @return this ItemData object
+     */
+    ItemData setSkullValue(String skullValue);
+
+    String getSkullValue();
+
     ItemStack build();
 
-    ItemData setDisplayName(String displayName);
+    Material getMaterial();
 
-    ItemData setLore(String... lore);
+    byte getDataID();
 
-    ItemData setAmount(int amount);
+    ItemData setDataID(byte dataID);
 
-    ItemData setItemFlags(ItemFlag... itemFlags);
+    short getDamage();
+
+    ItemData setDamage(short damage);
+
+    boolean isUnbreakable();
 
     ItemData setUnbreakable(boolean unbreakable);
 
-    ItemData setEnchantment(Enchantment enchantment, int level);
+    int getAmount();
 
-    ItemData setEnchantments(Map<Enchantment, Integer> enchantmentsAndLevels);
+    ItemData setAmount(int amount);
 
-    ItemData setDamage(int damage);
-
-    boolean transformStrings();
-
-    static ItemData simple(Material material) {
-        if (InventoryFramework.get().getServerVersion().equals(ServerVersion.V1_18)) {
-            return new SimpleItemData_1_18(material);
-        } else {
-            return new SimpleItemData_1_12(material);
-        }
-    }
+    String getDisplayName();
 }

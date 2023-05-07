@@ -1,13 +1,13 @@
-package de.hyper.inventory.items.impl;
+package de.hyper.inventory.items.old;
 
 import org.bukkit.Material;
 
 /**
  * @author hyperspace_pilot
  */
-public class SimpleItemData_1_18 extends ItemData_1_18 {
+public class oSimpleItemData_1_12 extends oItemData_1_12 {
 
-    public SimpleItemData_1_18(Material material) {
+    public oSimpleItemData_1_12(Material material) {
         super(material);
     }
     @Override

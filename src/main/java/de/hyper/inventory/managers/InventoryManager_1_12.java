@@ -12,9 +12,10 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -23,9 +24,9 @@ import java.util.concurrent.Executors;
  */
 public class InventoryManager_1_12 implements InventoryManager {
 
-    private Plugin plugin;
-    private Map<Player, ArrayList<Inventory>> playerInventories;
-    private Executor threadPool;
+    private final Plugin plugin;
+    private final Map<Player, CopyOnWriteArrayList<Inventory>> playerInventories;
+    private final Executor threadPool;
 
     public InventoryManager_1_12(Plugin plugin) {
         this.plugin = plugin;
@@ -40,8 +41,13 @@ public class InventoryManager_1_12 implements InventoryManager {
     }
 
     @Override
-    public Map<Player, ArrayList<Inventory>> getPlayerInventories() {
+    public Map<Player, CopyOnWriteArrayList<Inventory>> getPlayerInventories() {
         return playerInventories;
+    }
+
+    @Override
+    public Plugin getPlugin() {
+        return this.plugin;
     }
 
     @EventHandler
@@ -52,7 +58,7 @@ public class InventoryManager_1_12 implements InventoryManager {
         Player player = (Player) event.getWhoClicked();
         InventoryView view = event.getView();
         if (playerInventories.containsKey(player)) {
-            ArrayList<Inventory> inventories = playerInventories.get(player);
+            CopyOnWriteArrayList<Inventory> inventories = playerInventories.get(player);
             for (Inventory inventory : inventories) {
                 if (inventory.getRawTitle().equals(view.getTitle())) {
                     if (inventory.getButtons().containsKey(event.getSlot())) {
@@ -76,20 +82,23 @@ public class InventoryManager_1_12 implements InventoryManager {
         Player player = (Player) event.getPlayer();
         InventoryView view = event.getView();
         if (playerInventories.containsKey(player)) {
-            ArrayList<Inventory> inventories = playerInventories.get(player);
-            for (Inventory inventory : inventories) {
-                if (inventory.getRawTitle().equals(view.getTitle())) {
-                    if (inventory.isAnimated() && inventory.getAnimation().isAnimating()) {
-                        player.openInventory(inventory.getInventoryBuilder().getBukkitInventory());
-                        return;
-                    }
-                    if (inventory.isCloseable()) {
-                        inventories.remove(inventory);
-                        inventory.onClose();
-                    } else {
-                        player.openInventory(inventory.getInventoryBuilder().getBukkitInventory());
+            try {
+                CopyOnWriteArrayList<Inventory> inventories = playerInventories.get(player);
+                for (Inventory inventory : inventories) {
+                    if (inventory.getRawTitle().equals(view.getTitle())) {
+                        if (inventory.isAnimated() && inventory.getAnimation().isAnimating()) {
+                            player.openInventory(inventory.getInventoryBuilder().getBukkitInventory());
+                            return;
+                        }
+                        if (inventory.isCloseable()) {
+                            inventories.remove(inventory);
+                            inventory.onClose();
+                        } else {
+                            player.openInventory(inventory.getInventoryBuilder().getBukkitInventory());
+                        }
                     }
                 }
+            } catch (ConcurrentModificationException e) {
             }
         }
     }

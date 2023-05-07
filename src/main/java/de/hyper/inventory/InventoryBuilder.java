@@ -6,12 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author hyperspace_pilot
  */
-@RequiredArgsConstructor @Getter
+@RequiredArgsConstructor
+@Getter
 public class InventoryBuilder {
 
     protected final InventoryManager inventoryManager;
@@ -21,19 +22,19 @@ public class InventoryBuilder {
 
     public void buildInventory(Inventory inventory) {
         this.inventory = inventory;
-        this.inventory.fillInventory();
         this.inventory.setInventoryBuilder(this);
-        this.player = inventory.getPlayer();
         String rawTitle = "§0" + inventory.getTitle();
-        this.inventory.setRawTitle(rawTitle);
         this.bukkitInventory = Bukkit.createInventory(
                 null, inventory.getRows() * 9, rawTitle);
+        this.player = inventory.getPlayer();
+        this.inventory.setRawTitle(rawTitle);
+        this.inventory.fillInventory();
         this.inventory.setCreated(true);
         this.player.closeInventory();
         this.player.openInventory(this.bukkitInventory);
         this.inventory.onOpen();
         if (!this.inventoryManager.getPlayerInventories().containsKey(player)) {
-            this.inventoryManager.getPlayerInventories().put(player, new ArrayList<>());
+            this.inventoryManager.getPlayerInventories().put(player, new CopyOnWriteArrayList<>());
         }
         this.inventoryManager.getPlayerInventories().get(player).add(this.inventory);
         buildDesign();
@@ -53,7 +54,6 @@ public class InventoryBuilder {
                             if (bukkitInventory.getItem((i * 9) + a) == null) {
                                 ItemData itemData = line[a];
                                 if (itemData != null) {
-                                    itemData.transformStrings();
                                     bukkitInventory.setItem((i * 9) + a, itemData.build());
                                 }
                             }
@@ -79,7 +79,6 @@ public class InventoryBuilder {
                         e.printStackTrace();
                     }
                 }
-                data.getSecond().transformStrings();
                 this.bukkitInventory.setItem(data.getFirst(), data.getSecond().build());
             }
             this.inventory.animation.setAnimating(false);

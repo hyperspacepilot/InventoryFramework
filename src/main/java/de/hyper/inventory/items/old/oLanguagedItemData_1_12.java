@@ -1,4 +1,4 @@
-package de.hyper.inventory.items.impl;
+package de.hyper.inventory.items.old;
 
 import org.bukkit.Material;
 
@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * @author hyperspace_pilot
  */
-public abstract class LanguagedItemData_1_12 extends ItemData_1_12 {
-    public LanguagedItemData_1_12(Material material) {
+public abstract class oLanguagedItemData_1_12 extends oItemData_1_12 {
+    public oLanguagedItemData_1_12(Material material) {
         super(material);
     }
 
